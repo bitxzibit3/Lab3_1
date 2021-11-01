@@ -11,6 +11,7 @@
 #include "complex.h"
 #include <string>
 #include <time.h>
+#include <fstream>
 
 int variable_choice();
 
@@ -24,7 +25,7 @@ const size_t MSGS_SIZE = (sizeof(MSGS) / sizeof(MSGS[0]));
 template <class T>
 Sequence<T> *NewSequence (int, T * = NULL, size_t = 0);
 
-int stoi (char *);
+int stoi (const char *);
 
 int choice_();
 
@@ -37,7 +38,7 @@ int comp (int, int);
 
 int comp (double, double);
 
-int comp (std::string, std::string);
+int comp (const std::string, const std::string);
 
 int comp (complex, complex);
 

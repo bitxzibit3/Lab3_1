@@ -35,3 +35,15 @@ int main()
     }
     return 0;
 }
+
+//int main()
+//{
+//    std::ofstream str("straight_tests.txt"), rev ("reverse_tests.txt"), random ("random_tests.txt");
+//    for (size_t size = 10; size <= 100000; size *= 10)
+//    {
+//        std::cout << size << std::endl;
+//        make_straight_tests(size, str, rev);
+//        make_random_tests(size, random);
+//    }
+//    return 0;
+//}

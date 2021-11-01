@@ -6,7 +6,7 @@
 #include <time.h>
 #include <fstream>
 
-int stoi (char *str)
+int stoi (const char *str)
 {
     int ans = 0, i = 0;
     int sign = (str[0] == '-') ? -1: (((str[0] >= '0') && (str[0] <= '9')) ? 1: 0);
@@ -74,7 +74,7 @@ template <class T>
 int dialog()
 {
     int choice = choice_();
-    while (1)
+    while (true)
     switch (choice)
     {
         case(0):
@@ -185,7 +185,7 @@ int comp (double a, double b)
     return a > b? 1 : (a == b)? 0: -1;
 }
 
-int comp (std::string a, std::string b) // Лексикографическое сравнение.
+int comp (const std::string a, const std::string b) // Лексикографическое сравнение.
 {
     return a > b? 1 : (a == b)? 0: -1;
 }
@@ -369,49 +369,64 @@ void make_straight_tests (size_t size, std::ofstream &outstr, std::ofstream &out
     Sequence<int> *array = NewSequence(2, data, size);
     outstr << size << " ";
     outstr << sort_timer<int>(shell_sort, array, comp) << " ";
-    Sequence<int> *list = NewSequence(1, data, size);
-    outstr << sort_timer<int>(shell_sort, list, comp) << " ";
     array->Delete();
-    list->Delete();
-    list = NewSequence(1, data, size);
     array = NewSequence(2, data, size);
     outstr << sort_timer<int>(selection_sort, array, comp) << " ";
-    outstr << sort_timer<int>(selection_sort, list, comp) << std::endl;
+    array->Delete();
+    array = NewSequence(2, data, size);
+    outstr << sort_timer<int>(bubble_sort, array, comp) << " ";
+    array->Delete();
+    array = NewSequence(2, data, size);
+    outstr << sort_timer<int>(insertion_sort, array, comp) << " ";
+    array->Delete();
+    array = NewSequence(2, data, size);
+    outstr << sort_timer<int>(pair_insertion_sort, array, comp) << std::endl;
+    array->Delete();
     reverse_data(data, size);
+    std::cout << "Reversed";
     array = NewSequence(2, data, size);
     outrev << size << " ";
     outrev << sort_timer<int>(shell_sort, array, comp) << " ";
-    list = NewSequence(1, data, size);
-    outrev << sort_timer<int>(shell_sort, list, comp) << " ";
     array->Delete();
-    list->Delete();
-    list = NewSequence(1, data, size);
     array = NewSequence(2, data, size);
     outrev << sort_timer<int>(selection_sort, array, comp) << " ";
-    outrev << sort_timer<int>(selection_sort, list, comp) << std::endl;
-    delete[] data;
     array->Delete();
-    list->Delete();
+    array = NewSequence(2, data, size);
+    outrev << sort_timer<int>(pair_insertion_sort, array, comp) << " ";
+    array->Delete();
+    array = NewSequence(2, data, size);
+    outrev << sort_timer<int>(pair_insertion_sort, array, comp) << " ";
+    array->Delete();
+    array = NewSequence(2, data, size);
+    outrev << sort_timer<int>(pair_insertion_sort, array, comp) << std::endl;
+    array->Delete();
+    delete[] data;
 }
 void make_random_tests (size_t size, std::ofstream &out)
 {
-    double time1 = 0, time2 = 0, time3 = 0, time4 = 0;
-    for (size_t iteration = 0; iteration < 10; iteration++)
+    size_t number_of_iterations = 20;
+    double time1 = 0, time2 = 0, time3 = 0, time4 = 0, time5 = 0;
+    for (size_t iteration = 0; iteration < number_of_iterations; iteration++)
     {
         int *data = generate_seq(size);
         Sequence<int> *array = NewSequence(2, data, size);
         time1 += sort_timer<int>(shell_sort, array, comp);
-        Sequence<int> *list = NewSequence(1, data, size);
-        time2 += sort_timer<int>(shell_sort, list, comp);
         array->Delete();
-        list->Delete();
-        list = NewSequence(1, data, size);
         array = NewSequence(2, data, size);
-        time3 += sort_timer<int>(selection_sort, array, comp);
-        time4 += sort_timer<int>(selection_sort, list, comp);
-        delete[] data;
+        time2 += sort_timer<int>(selection_sort, array, comp);
         array->Delete();
-        list->Delete();
+        array = NewSequence(2, data, size);
+        time3 += sort_timer<int>(bubble_sort, array, comp);
+        array->Delete();
+        array = NewSequence(2, data, size);
+        time4 += sort_timer<int>(insertion_sort, array, comp);
+        array->Delete();
+        array = NewSequence(2, data, size);
+        time5 += sort_timer<int>(pair_insertion_sort, array, comp);
+        array->Delete();
+        delete[] data;
     }
-    out << size << " " << time1 / 10.0 << " "  << time2 / 10.0 << " " << time3 / 10.0 << " " << time4 / 10.0 << std::endl;
+    out << size << " " << time1 / (float)number_of_iterations << " "  << time2 / (float)number_of_iterations << " " <<
+    time3 / (float)number_of_iterations << " " << time4 / (float)number_of_iterations << " " <<
+    time5 / (float)number_of_iterations << std::endl;
 }
